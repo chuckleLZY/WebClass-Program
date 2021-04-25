@@ -1,0 +1,108 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Let's play game!</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+</head>
+<body >
+<div class="mf mf0">
+    <div id="mf0" style="margin:120px auto 120px;"></div>
+</div>
+<div class="mf mf">
+    <div id="mf" style="margin:120px auto 120px;"></div>
+    <div class="cs" id="cs" style="width:600px; margin:0 auto;">
+        <button class="custom-btn btn-9" id="reinit">重置魔方</button>
+
+        <button class="custom-btn btn-10" id="replace">重置位置</button>
+
+        <button class="custom-btn btn-11" id="startgame">开始游戏<div class="dot"></div></button>
+
+        <input type="text" readonly="true" id="foot" value="" />
+        <button class="custom-btn btn-15" id="backone">回退一步</button>
+        <button class="custom-btn btn-15" id="back">返回主页</button>
+    </div>
+
+</div>
+
+<div class="mf mf2">
+    <div id="mf2" style="margin:120px auto 80px;"></div>
+</div>
+</body>
+</html>
+<script src="js/Cube.js"></script>
+<script>
+//判断读取url绑定的值
+    function  getParams(name, href) {
+        var href = href || window.location.href,
+            value = '';
+
+        if (name) {
+            var reg = new RegExp(name + '=([^&]*)', 'g');
+            href.replace(reg, function($0, $1) {
+                value = decodeURI($1);
+            });
+        } else {
+            value = {};
+            var reg = /\b(\w+)=([^\/&]*)/g;
+            href.replace(reg, function($0, $1, $2) {
+                value[$1] = decodeURI($2);
+            });
+        }
+
+        return value;
+    };
+    var num =  Number(getParams("id"));
+    var dif = Number(getParams("dif"));
+
+    var aInt2 = document.getElementById('cs').getElementsByTagName('button');
+    var ans=document.getElementById('foot');
+    var cube = new Cube('mf', {
+        borderLength: (100-num*10)*num, trunBack: function (json) {
+            ans.value = '当前步数：' + this.getFoots();
+        },order:num
+    });
+    function start(){
+        cube.initColor();
+        console.log(aInt2);
+        return 1;
+    };
+    var x=start();
+
+
+
+
+    ans.value = '当前步数：' + cube.getFoots();
+
+    aInt2[0].onclick = function () {
+        cube.initColor();
+        test();
+
+    };
+    aInt2[1].onclick = function () {
+        cube.initL();
+        test();
+
+    };
+    aInt2[2].onclick = function test() {
+        cube.random(dif);
+        test();
+
+    };
+
+
+   aInt2[3].onclick = function () {
+        cube.back();
+       //window.location.href="start.html";
+    }
+    aInt2[4].onclick = function () {
+
+        window.location.href="start.html";
+    }
+    function  test() {
+        ans.value = '当前步数：' + cube.getFoots();
+    }
+
+</script>
